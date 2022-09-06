@@ -1,16 +1,20 @@
-import fitz
+import PyPDF2
 
 import openpyxl
 
-pdf = fitz.open('D:\\GitProject\\addressbok_pdf_excel\\provider_results.pdf')
+pdffile = open('D:\\pythonProject\\provider_results.pdf','rb')
+
+pdf = PyPDF2.PdfFileReader(pdffile)
 
 x = ''
 
 for y in range(2, 622):
-    data = pdf.load_page(y).get_text()
+    data = pdf.getPage(y).extractText()
+    data = data[:-1]
     x = x + data
 
-for inpt in range(150):
+for inpt in range(250):
+    print(inpt)
 
     wb = openpyxl.load_workbook('D:\\GitProject\\addressbok_pdf_excel\\sheetpdftoexcel.xlsx')
     inputsheet = wb['Sheet1']
@@ -70,5 +74,7 @@ for inpt in range(150):
     x = x[end:]
 
     wb.save("sheetpdftoexcel.xlsx")
+
+    print("successfully added rou :", str(inputrow))
 
 
